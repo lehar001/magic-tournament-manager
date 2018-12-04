@@ -10,8 +10,14 @@ const { resolve } = require('path');
 
 const app = express();
 
+const mongoose = require('mongoose');
+
+
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
+
+// Connect to mongodb
+mongoose.connect('mongodb://lehar001:AIKochCS1337@ds123224.mlab.com:23224/draft-manager');
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {

@@ -8,14 +8,28 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
+// Import pages
 import HomePage from 'containers/HomePage/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import LoginPage from 'containers/LoginPage/Loadable';
+
+// Import components
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+
 import './style.scss';
+
+// Private route used to check if user is logged in
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    localStorage.getItem('jwtToken')
+      ? <Component {...props} />
+      : <Redirect to='/login' />
+  )} />
+)
 
 const App = () => (
   <div className="app-wrapper">
@@ -28,7 +42,8 @@ const App = () => (
     <Header />
     <Switch>
       <Route exact path="/" component={HomePage} />
-      <Route path="/features" component={FeaturePage} />
+      <PrivateRoute path="/features" component={FeaturePage} />
+      <Route path="/login" component={LoginPage} />
       <Route path="" component={NotFoundPage} />
     </Switch>
     <Footer />
